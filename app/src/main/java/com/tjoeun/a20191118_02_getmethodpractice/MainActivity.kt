@@ -34,6 +34,7 @@ class MainActivity : BaseActivety() {
                     nameTxt.text = me.name
                     phoneNumTxt.text = me.phone
                     loginTxt.text = me.login_id
+                    categoryTxt.text = me.category.title
                 }
 
             }
