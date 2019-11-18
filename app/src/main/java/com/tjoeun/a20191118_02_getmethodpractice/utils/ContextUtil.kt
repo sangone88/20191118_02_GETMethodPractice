@@ -22,6 +22,7 @@ class ContextUtil {
             pref.edit().putString(USER_ID, userId).apply()
         }
 
+//        getter
         fun getUserId(context: Context) : String {
 
 //            메모장(파일이름 : PracticePrefference) 을 실제로 여는 동작
