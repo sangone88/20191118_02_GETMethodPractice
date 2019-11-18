@@ -44,7 +44,7 @@ class ServerUtil {
                 override fun onResponse(call: Call, response: Response) {
 //                    성공
                     //                    Log.d("서버응답내용", body)
-                    var body = response.body!!.string()
+                    var body = response.body()!!.string()
 //                    var json: JSONObject = JSONObject(body)  자료형 적을 필요도 없음
                     var json = JSONObject(body)
                     handler?.onResponse(json)
@@ -52,6 +52,36 @@ class ServerUtil {
                 }
 
             })
+        }
+
+        fun getRequestMyInfo(context: Context, handler: JasonResponseHandler?) {
+            var client = OkHttpClient()
+            var urlBuilder = HttpUrl.parse("${BASE_URL}/my_info")!!.newBuilder()
+//            GET 방식의 파라미터를 첨부하는 방법
+            urlBuilder.addEncodedQueryParameter("device_token", "test")
+
+//            url 최종 확정
+            val requestUrl = urlBuilder.build().toString()
+            Log.d("요청URL", requestUrl)
+
+            val request = Request.Builder()
+                .url(requestUrl)
+                .header("X-Http-Token", ContextUtil.getUserToken(context))
+                .build()
+
+            client.newCall(request).enqueue(object :Callback {
+                override fun onFailure(call: Call, e: IOException) {
+                    Log.d("서버통신에러", e.localizedMessage)
+                }
+
+                override fun onResponse(call: Call, response: Response) {
+                    val body = response.body()!!.string()
+                    val json = JSONObject(body)
+                    handler?.onResponse(json)
+                }
+
+            })
+
         }
 
     }
